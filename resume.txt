@@ -1,0 +1,22 @@
+Candidate Name: Shaik Md Sofiyan
+Education: Bachelor of Computer Applications (BCA) - Nandi Institute of Management & Science
+CGPA: 8.7 / 10
+
+Professional Summary:
+Aspiring Software Developer and Final Year BCA student with strong foundations in Design and Analysis of Algorithms, Data Structures, and Object-Oriented Programming. Experienced in developing desktop and web applications using C# and the .NET ecosystem.
+
+Technical Skills:
+- Programming Languages: C#, Python, JavaScript
+- Frameworks & Technologies: .NET, ASP.NET Core, ADO.NET, Node.js
+- Databases: SQL, SQL Server, MySQL
+- Core Computer Science: Data Structures, Algorithms, OOP
+- Developer Tools: Git, GitHub, Visual Studio, VS Code
+
+Projects:
+1. SmartMatch - Smart Internship & Job-Matching Portal
+   - Developed an algorithmic ATS job-matching engine using C# (.NET).
+   - Implemented KMP and Rabin-Karp pattern searching algorithms to detect required technical skills.
+   - Designed a dynamic programming Longest Common Subsequence (LCS) scoring module for partial and near-match similarity analysis.
+
+2. Student Management System
+   - Built a C# Windows Forms application with SQL Server database connectivity using ADO.NET.

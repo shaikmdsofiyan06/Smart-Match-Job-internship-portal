@@ -1,0 +1,15 @@
+Role: Junior Software Engineer Intern / Web Developer
+Company: TechNova Solutions Ltd.
+Location: Bangalore, India
+Stipend: ₹25,000 / month
+
+About the Role:
+We are seeking an enthusiastic Junior Software Engineer Intern to join our application development team. You will participate in building scalable, reliable software components and working across the full application lifecycle.
+
+Requirements & Technical Skills:
+- Strong knowledge of C# and modern .NET development.
+- Hands-on experience with SQL databases (e.g. SQL Server).
+- Solid grasp of core Computer Science fundamentals: Data Structures, Algorithms, and Object-Oriented Programming (OOP).
+- Familiarity with version control using Git.
+- Exposure to JavaScript or Node.js is a plus.
+- Good problem-solving ability and communication skills.

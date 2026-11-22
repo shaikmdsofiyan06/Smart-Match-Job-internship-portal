@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartMatch - Smart Internship & Job-Matching Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+</head>
+<body>
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- ================= TOP COLLEGE BAR & MOCKUP SCREEN SWITCHER ================= -->
+    <div class="quick-screen-bar">
+        <div class="screen-bar-container">
+            <div class="college-badge-chip">
+                <span class="pulse-dot"></span>
+                <strong>Nandi Institute of Management & Science (NIMS)</strong> · BCA V Sem (2026–2027)
+            </div>
+            <div class="screen-bar-pills">
+                <span class="screen-bar-title">UI Screens:</span>
+                <button class="screen-pill active" id="pill-landing" onclick="navigateTo('landing')">1. Landing Hero</button>
+                <button class="screen-pill" id="pill-student" onclick="navigateTo('student')">2. Student Dash</button>
+                <button class="screen-pill" id="pill-recruiter" onclick="navigateTo('recruiter')">3. Recruiter Dash</button>
+                <button class="screen-pill" id="pill-daa" onclick="navigateTo('daa')">4. DAA Studio</button>
+                <button class="screen-pill" id="pill-login" onclick="openAuthModal('login')">5. Welcome Back</button>
+                <button class="screen-pill" id="pill-signup" onclick="openAuthModal('signup')">6. Create Account</button>
+                <button class="screen-pill" id="pill-internships" onclick="navigateTo('internships')">7. Internships</button>
+                <button class="screen-pill" id="pill-jobs" onclick="navigateTo('jobs')">8. Jobs</button>
+                <button class="screen-pill" id="pill-applications" onclick="navigateTo('applications')">9. Applications</button>
+                <button class="screen-pill" id="pill-profile" onclick="navigateTo('profile')">10. Profile & Resume</button>
+                <button class="screen-pill" id="pill-about" onclick="navigateTo('about')">11. About & Contact</button>
+                <button class="screen-pill" id="pill-cert" onclick="printOfficialCertificate()">12. Certificate (PDF)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 1. PUBLIC TOP NAVBAR ================= -->
+    <header class="main-navbar" id="main-nav">
+        <div class="nav-container">
+            <div class="nav-brand" onclick="navigateTo('landing')">
+                <div class="brand-logo-icon">S</div>
+                <span class="brand-logo-text">SmartMatch</span>
+            </div>
+
+            <nav class="nav-center-links">
+                <a href="javascript:void(0)" class="nav-link active" id="nav-link-home" onclick="navigateTo('landing')">Home</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-link-internships" onclick="navigateTo('internships')">Internships</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-link-jobs" onclick="navigateTo('jobs')">Jobs</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-link-applications" onclick="navigateTo('applications')">Applications</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-link-companies" onclick="scrollToSection('contact-section')">Companies</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-link-about" onclick="scrollToSection('about-section')">About</a>
+                <a href="javascript:void(0)" class="nav-link" id="nav-link-contact" onclick="scrollToSection('contact-section')">Contact</a>
+            </nav>
+
+            <div class="nav-right-actions" id="nav-auth-actions">
+                <button class="btn-ghost-nav" onclick="openAuthModal('login')">Login</button>
+                <button class="btn-primary-nav" onclick="openAuthModal('signup')">Sign Up</button>
+            </div>
+
+            <div class="nav-right-actions" id="nav-user-actions" style="display: none;">
+                <div class="user-quick-profile" onclick="openCurrentRoleDashboard()">
+                    <span class="avatar-circle" id="nav-avatar-initial">S</span>
+                    <div class="user-nav-meta">
+                        <span id="nav-user-name">Sofiyan</span>
+                        <span id="nav-user-role" class="badge-role">Student</span>
+                    </div>
+                </div>
+                <button class="btn-ghost-nav btn-sm" onclick="handleLogout()">Sign Out</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= 2. PUBLIC LANDING VIEW ================= -->
+    <div id="view-landing" class="page-view active">
+        <!-- HERO SECTION -->
+        <section class="hero-section">
+            <div class="hero-container">
+                <div class="hero-left">
+                    <h1 class="hero-title">
+                        Find the Right Internship. Build Your Career. <span class="text-gradient-teal">Get Hired.</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Discover top internships and job opportunities with AI-powered skill matching. Powered by exact KMP pattern searching and Dynamic Programming algorithms.
+                    </p>
+
+                    <!-- Search Bar -->
+                    <div class="hero-search-bar">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="landing-search-input" placeholder="Search for internships, jobs or skills (e.g. C#, .NET, Python, SQL)...">
+                        <button class="btn-search" onclick="handleLandingSearch()">Search</button>
+                    </div>
+
+                    <!-- College & Algorithm Pill Banner -->
+                    <div class="hero-backend-pill">
+                        <span class="dot-online"></span>
+                        <span>Nandi Institute of Management & Science (NIMS) · BCA V Sem Project · C# .NET Backend Engine</span>
+                    </div>
+                </div>
+
+                <!-- HERO RIGHT: 3D FLOATING MOCKUP CARDS -->
+                <div class="hero-right">
+                    <div class="hero-mockup-canvas">
+                        <div class="floating-badge badge-1">
+                            <span class="f-icon">💼</span>
+                            <div>
+                                <strong>Internships</strong>
+                                <span>12k+ Openings</span>
+                            </div>
+                        </div>
+
+                        <div class="floating-badge badge-2">
+                            <span class="f-icon">🚀</span>
+                            <div>
+                                <strong>Jobs</strong>
+                                <span>50k+ Openings</span>
+                            </div>
+                        </div>
+
+                        <div class="floating-badge badge-3">
+                            <span class="f-icon">🏢</span>
+                            <div>
+                                <strong>Companies</strong>
+                                <span>10k+ Hiring</span>
+                            </div>
+                        </div>
+
+                        <!-- Central Match Preview Card -->
+                        <div class="center-preview-card">
+                            <div class="preview-card-header">
+                                <span class="company-badge-google">G</span>
+                                <div>
+                                    <h4>Software Development Intern</h4>
+                                    <span>Google · Remote · 3 Months</span>
+                                </div>
+                                <span class="fit-chip-green">95% Match</span>
+                            </div>
+                            <div class="preview-skills">
+                                <span class="tag-skill">C#</span>
+                                <span class="tag-skill">.NET</span>
+                                <span class="tag-skill">Algorithms</span>
+                                <span class="tag-skill">SQL</span>
+                            </div>
+                            <div class="preview-progress">
+                                <div class="prog-bar-fill" style="width: 95%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURE CARDS ROW -->
+        <section class="features-bar-section">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feat-icon-box bg-purple">⚡</div>
+                    <div>
+                        <h4>Smart Matching</h4>
+                        <p>Find Your Best Fit</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feat-icon-box bg-blue">📈</div>
+                    <div>
+                        <h4>Real-Time Analytics</h4>
+                        <p>Track Your Progress</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feat-icon-box bg-teal">🚀</div>
+                    <div>
+                        <h4>Career Growth</h4>
+                        <p>Grow with Us</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feat-icon-box bg-indigo">🛡️</div>
+                    <div>
+                        <h4>Trusted by Top Companies</h4>
+                        <p>Verified Recruiters</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPLORE OPPORTUNITIES PREVIEWS (INTERNSHIPS & JOBS) -->
+        <section class="listings-preview-section">
+            <div class="section-header-row">
+                <div>
+                    <h2>Top Featured Internships</h2>
+                    <p class="section-sub">Kickstart your career with high-growth technical roles</p>
+                </div>
+                <button class="btn-link" onclick="navigateTo('internships')">View All Internships ➔</button>
+            </div>
+            <div class="opp-cards-grid" id="landing-internships-grid"></div>
+
+            <div class="section-header-row mt-40">
+                <div>
+                    <h2>Verified Full-Time & Graduate Jobs</h2>
+                    <p class="section-sub">Find your dream job tailored to your technical skills</p>
+                </div>
+                <button class="btn-link" onclick="navigateTo('jobs')">View All Jobs ➔</button>
+            </div>
+            <div class="opp-cards-grid" id="landing-jobs-grid"></div>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section class="about-section" id="about-section">
+            <div class="about-card">
+                <div class="about-content">
+                    <h2>About SmartMatch</h2>
+                    <p>
+                        SmartMatch is an innovative internship and job-matching platform built for the Department of Computer Application, Nandi Institute of Management & Science (NIMS). The project combines <strong>classical string matching algorithms (Knuth-Morris-Pratt & Rabin-Karp)</strong> with <strong>Dynamic Programming (Longest Common Subsequence)</strong> to automate resume screening and eliminate manual placement friction.
+                    </p>
+                    <div class="team-chips">
+                        <span>Project Lead: <strong>Shaik Md Sofiyan</strong></span>
+                        <span>Team: <strong>Shaik Abdul Wadood, Moinuddin, Mohammed Mustafa</strong></span>
+                        <span>Guide: <strong>Prof. Thameemunnisa</strong></span>
+                    </div>
+                    <button class="btn-primary mt-15" onclick="navigateTo('daa')">Explore Algorithm Studio ➔</button>
+                </div>
+                <div class="about-image-box">
+                    <div class="campus-mock-graphic">
+                        <span class="campus-icon">🏛️</span>
+                        <h3>NIMS Campus Recruitment Cell</h3>
+                        <p>Bangalore, Karnataka · BCA V Sem (2026-2027)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section class="contact-section" id="contact-section">
+            <div class="contact-card">
+                <div class="contact-info">
+                    <h2>Contact Us</h2>
+                    <p class="section-sub">Have questions? We're here to help.</p>
+                    <div class="contact-items">
+                        <div class="c-item"><span class="c-icon">📞</span> +91 98765 43210</div>
+                        <div class="c-item"><span class="c-icon">✉️</span> support@smartmatch.com / placement@nims.edu.in</div>
+                        <div class="c-item"><span class="c-icon">📍</span> Bengaluru, Karnataka, India</div>
+                    </div>
+                </div>
+                <div class="contact-form-side">
+                    <div class="map-placeholder">
+                        <span class="pin-icon">📍</span>
+                        <strong>NIMS Placement Portal Hub</strong>
+                        <span>Bengaluru Urban</span>
+                    </div>
+                    <button class="btn-primary btn-block mt-10" onclick="showToast('Message sent to NIMS Placement Officer!', 'success')">Send Message ➔</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= 2B. DEDICATED INTERNSHIPS VIEW (Matches Screenshot Bottom-Left 1) ================= -->
+    <div id="view-internships" class="page-view" style="display: none;">
+        <div class="subpage-container">
+            <div class="subpage-header-row">
+                <div>
+                    <h1 class="subpage-title">Internships</h1>
+                    <p class="subpage-subtitle">Kickstart Your Career</p>
+                </div>
+                <div class="subpage-header-right">
+                    <button class="btn-primary-nav" onclick="navigateTo('student')">Go to Student Dashboard ➔</button>
+                </div>
+            </div>
+
+            <!-- Search & Filter Bar -->
+            <div class="subpage-search-bar">
+                <div class="search-input-wrap">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="internships-page-search" placeholder="Search internships..." onkeyup="filterDedicatedInternships(this.value)">
+                </div>
+                <button class="btn-filter" onclick="showToast('Filters: Remote, Bangalore, Stipend > ₹20k applied', 'info')">
+                    <span class="filter-icon">⚙️</span> Filter
+                </button>
+            </div>
+
+            <!-- 3 Internship Cards Matching Screenshot -->
+            <div class="opp-cards-grid-3 mt-25" id="dedicated-internships-grid">
+                <!-- Card 1: Google Software Development Intern -->
+                <div class="opp-card-mockup" data-title="software development intern google">
+                    <div class="opp-top-row">
+                        <div class="company-logo-google">
+                            <svg viewBox="0 0 24 24" width="28" height="28">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                            </svg>
+                        </div>
+                        <span class="chip-featured-green">Featured</span>
+                    </div>
+                    <h3 class="opp-role-title">Software Development Intern</h3>
+                    <div class="opp-company-name">Google</div>
+                    <div class="opp-location-sub">Remote · 3 Months</div>
+                    <button class="btn-opp-action" onclick="applyDirect('Software Development Intern', 'Google')">Apply Now ➔</button>
+                </div>
+
+                <!-- Card 2: Microsoft Data Science Intern -->
+                <div class="opp-card-mockup" data-title="data science intern microsoft">
+                    <div class="opp-top-row">
+                        <div class="company-logo-ms">
+                            <svg viewBox="0 0 23 23" width="26" height="26">
+                                <path fill="#f35325" d="M1 1h10v10H1z"/>
+                                <path fill="#81bc06" d="M12 1h10v10H12z"/>
+                                <path fill="#05a6f0" d="M1 12h10v10H1z"/>
+                                <path fill="#ffba08" d="M12 12h10v10H12z"/>
+                            </svg>
+                        </div>
+                        <span class="chip-featured-green">Featured</span>
+                    </div>
+                    <h3 class="opp-role-title">Data Science Intern</h3>
+                    <div class="opp-company-name">Microsoft</div>
+                    <div class="opp-location-sub">Hybrid · 6 Months</div>
+                    <button class="btn-opp-action" onclick="applyDirect('Data Science Intern', 'Microsoft')">Apply Now ➔</button>
+                </div>
+
+                <!-- Card 3: Amazon Product Intern -->
+                <div class="opp-card-mockup" data-title="product intern amazon">
+                    <div class="opp-top-row">
+                        <div class="company-logo-amazon">amazon</div>
+                    </div>
+                    <h3 class="opp-role-title">Product Intern</h3>
+                    <div class="opp-company-name">Amazon</div>
+                    <div class="opp-location-sub">Remote · 3 Months</div>
+                    <button class="btn-opp-action" onclick="applyDirect('Product Intern', 'Amazon')">Apply Now ➔</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 2C. DEDICATED JOBS VIEW (Matches Screenshot Bottom-Left 2) ================= -->
+    <div id="view-jobs" class="page-view" style="display: none;">
+        <div class="subpage-container">
+            <div class="subpage-header-row">
+                <div>
+                    <h1 class="subpage-title">Jobs</h1>
+                    <p class="subpage-subtitle">Find Your Dream Job</p>
+                </div>
+                <div class="subpage-header-right">
+                    <button class="btn-primary-nav" onclick="navigateTo('student')">Go to Student Dashboard ➔</button>
+                </div>
+            </div>
+
+            <!-- Search & Filter Bar -->
+            <div class="subpage-search-bar">
+                <div class="search-input-wrap">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="jobs-page-search" placeholder="Search jobs..." onkeyup="filterDedicatedJobs(this.value)">
+                </div>
+                <button class="btn-filter" onclick="showToast('Filters: Full-Time, ₹10LPA+, Hybrid applied', 'info')">
+                    <span class="filter-icon">⚙️</span> Filter
+                </button>
+            </div>
+
+            <!-- 3 Job Cards Matching Screenshot -->
+            <div class="opp-cards-grid-3 mt-25" id="dedicated-jobs-grid">
+                <!-- Card 1: Microsoft Full Stack Developer -->
+                <div class="opp-card-mockup" data-title="full stack developer microsoft">
+                    <div class="opp-top-row">
+                        <div class="company-logo-ms">
+                            <svg viewBox="0 0 23 23" width="26" height="26">
+                                <path fill="#f35325" d="M1 1h10v10H1z"/>
+                                <path fill="#81bc06" d="M12 1h10v10H12z"/>
+                                <path fill="#05a6f0" d="M1 12h10v10H1z"/>
+                                <path fill="#ffba08" d="M12 12h10v10H12z"/>
+                            </svg>
+                        </div>
+                        <span class="chip-featured-green">Featured</span>
+                    </div>
+                    <h3 class="opp-role-title">Full Stack Developer</h3>
+                    <div class="opp-company-name">Microsoft</div>
+                    <div class="opp-location-sub">Hybrid · 1-2 Years</div>
+                    <button class="btn-opp-action" onclick="applyDirect('Full Stack Developer', 'Microsoft')">Apply Now ➔</button>
+                </div>
+
+                <!-- Card 2: Google Software Engineer -->
+                <div class="opp-card-mockup" data-title="software engineer google">
+                    <div class="opp-top-row">
+                        <div class="company-logo-google">
+                            <svg viewBox="0 0 24 24" width="28" height="28">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                            </svg>
+                        </div>
+                        <span class="chip-featured-green">Featured</span>
+                    </div>
+                    <h3 class="opp-role-title">Software Engineer</h3>
+                    <div class="opp-company-name">Google</div>
+                    <div class="opp-location-sub">Remote · 1-3 Years</div>
+                    <button class="btn-opp-action" onclick="applyDirect('Software Engineer', 'Google')">Apply Now ➔</button>
+                </div>
+
+                <!-- Card 3: TCS Data Analyst -->
+                <div class="opp-card-mockup" data-title="data analyst tcs">
+                    <div class="opp-top-row">
+                        <div class="company-logo-tcs">tcs</div>
+                    </div>
+                    <h3 class="opp-role-title">Data Analyst</h3>
+                    <div class="opp-company-name">TCS</div>
+                    <div class="opp-location-sub">Onsite · 1-2 Years</div>
+                    <button class="btn-opp-action" onclick="applyDirect('Data Analyst', 'TCS')">Apply Now ➔</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 2D. DEDICATED APPLICATIONS VIEW (Matches Screenshot Bottom-Center 1) ================= -->
+    <div id="view-applications" class="page-view" style="display: none;">
+        <div class="subpage-container">
+            <div class="subpage-header-row">
+                <div>
+                    <h1 class="subpage-title">My Applications</h1>
+                    <p class="subpage-subtitle">Track your application status</p>
+                </div>
+                <div class="subpage-header-right">
+                    <button class="btn-primary-nav" onclick="navigateTo('student')">Back to Dashboard ➔</button>
+                </div>
+            </div>
+
+            <div class="applications-card-box mt-20">
+                <div class="filter-pills-row">
+                    <button class="pill-btn active" id="btn-app-filter-all" onclick="filterApplicationsDisplay('all')">All</button>
+                    <button class="pill-btn" id="btn-app-filter-internships" onclick="filterApplicationsDisplay('internship')">Internships</button>
+                    <button class="pill-btn" id="btn-app-filter-jobs" onclick="filterApplicationsDisplay('job')">Jobs</button>
+                </div>
+
+                <div class="apps-list-rows mt-20" id="dedicated-apps-list">
+                    <!-- Row 1: Google Software Development Intern -->
+                    <div class="app-track-row" data-type="internship">
+                        <div class="app-track-left">
+                            <div class="company-logo-google-sm">
+                                <svg viewBox="0 0 24 24" width="22" height="22">
+                                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                                </svg>
+                            </div>
+                            <div class="app-track-info">
+                                <h4>Google - Software Development Intern</h4>
+                                <span>Applied on Sep 30, 2026</span>
+                            </div>
+                        </div>
+                        <span class="badge-status-green">✓ Shortlisted</span>
+                    </div>
+
+                    <!-- Row 2: Microsoft Full Stack Developer -->
+                    <div class="app-track-row" data-type="job">
+                        <div class="app-track-left">
+                            <div class="company-logo-ms-sm">
+                                <svg viewBox="0 0 23 23" width="20" height="20">
+                                    <path fill="#f35325" d="M1 1h10v10H1z"/>
+                                    <path fill="#81bc06" d="M12 1h10v10H12z"/>
+                                    <path fill="#05a6f0" d="M1 12h10v10H1z"/>
+                                    <path fill="#ffba08" d="M12 12h10v10H12z"/>
+                                </svg>
+                            </div>
+                            <div class="app-track-info">
+                                <h4>Microsoft - Full Stack Developer</h4>
+                                <span>Applied on Sep 28, 2026</span>
+                            </div>
+                        </div>
+                        <span class="badge-status-blue">⏳ Under Review</span>
+                    </div>
+
+                    <!-- Row 3: Amazon Data Science Intern -->
+                    <div class="app-track-row" data-type="internship">
+                        <div class="app-track-left">
+                            <div class="company-logo-amazon-sm">a</div>
+                            <div class="app-track-info">
+                                <h4>Amazon - Data Science Intern</h4>
+                                <span>Applied on Sep 25, 2026</span>
+                            </div>
+                        </div>
+                        <span class="badge-status-orange">📅 Interview</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 2E. DEDICATED PROFILE & RESUME VIEW (Matches Screenshot Bottom-Center 2) ================= -->
+    <div id="view-profile" class="page-view" style="display: none;">
+        <div class="subpage-container">
+            <div class="subpage-header-row">
+                <div>
+                    <h1 class="subpage-title">Profile & Resume</h1>
+                    <p class="subpage-subtitle">Manage your profile and resume</p>
+                </div>
+                <div class="subpage-header-right">
+                    <button class="btn-primary-nav" onclick="navigateTo('student')">Back to Dashboard ➔</button>
+                </div>
+            </div>
+
+            <div class="profile-resume-grid-mockup mt-25">
+                <!-- Left Profile Card -->
+                <div class="profile-avatar-card">
+                    <div class="avatar-circle-xl">S</div>
+                    <h2 class="profile-name-text" id="dedicated-prof-name">Shaik Md Sofiyan</h2>
+                    <span class="profile-role-sub">BCA Student · NIMS</span>
+                    <button class="btn-edit-profile mt-15" onclick="showToast('Profile editing mode enabled!', 'info')">Edit Profile</button>
+                </div>
+
+                <!-- Right Resume Card -->
+                <div class="resume-manage-card">
+                    <h3 class="resume-card-title">Resume</h3>
+                    <div class="resume-download-box">
+                        <div class="pdf-icon-square">📄</div>
+                        <div class="pdf-details">
+                            <strong>Resume.pdf</strong>
+                            <span>(245 KB)</span>
+                        </div>
+                        <button class="btn-download-purple" onclick="showToast('Downloading verified candidate resume (Resume.pdf)...', 'success')">Download</button>
+                    </div>
+                    <div class="upload-success-chip mt-20">
+                        <span class="check-icon">✓</span> Uploaded Successfully! Synced with C# Backend.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 3. DASHBOARD WRAPPER (STUDENT / RECRUITER / DAA) ================= -->
+    <div id="view-dashboard-layout" class="dashboard-layout" style="display: none;">
+        <!-- LEFT SIDEBAR -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-brand" onclick="navigateTo('landing')">
+                <div class="brand-logo-icon">S</div>
+                <span class="brand-logo-text">SmartMatch</span>
+            </div>
+
+            <!-- Role-Specific Sidebar Links -->
+            <div id="sidebar-student-menu" class="sidebar-menu">
+                <button class="sidebar-item active" onclick="switchDashboardTab('dash-student-home')">
+                    <span class="s-icon">📊</span> Dashboard
+                </button>
+                <button class="sidebar-item" onclick="switchDashboardTab('dash-student-applications')">
+                    <span class="s-icon">📋</span> My Applications
+                </button>
+                <button class="sidebar-item" onclick="switchDashboardTab('dash-student-upload')">
+                    <span class="s-icon">📤</span> Upload Resume
+                </button>
+                <button class="sidebar-item" onclick="switchDashboardTab('dash-student-analytics')">
+                    <span class="s-icon">🎯</span> Skill Analytics (C#)
+                </button>
+                <button class="sidebar-item" onclick="navigateTo('daa')">
+                    <span class="s-icon">🧮</span> DAA Studio
+                </button>
+                <button class="sidebar-item btn-logout-side" onclick="handleLogout()">
+                    <span class="s-icon">🚪</span> Logout
+                </button>
+            </div>
+
+            <div id="sidebar-recruiter-menu" class="sidebar-menu" style="display: none;">
+                <button class="sidebar-item active" onclick="switchDashboardTab('dash-recruiter-home')">
+                    <span class="s-icon">📊</span> Dashboard
+                </button>
+                <button class="sidebar-item" onclick="switchDashboardTab('dash-recruiter-post')">
+                    <span class="s-icon">➕</span> Post Job/Internship
+                </button>
+                <button class="sidebar-item" onclick="switchDashboardTab('dash-recruiter-applicants')">
+                    <span class="s-icon">👥</span> Applicants (QuickSort)
+                </button>
+                <button class="sidebar-item" onclick="navigateTo('daa')">
+                    <span class="s-icon">🧮</span> DAA Studio
+                </button>
+                <button class="sidebar-item btn-logout-side" onclick="handleLogout()">
+                    <span class="s-icon">🚪</span> Logout
+                </button>
+            </div>
+
+            <div id="sidebar-daa-menu" class="sidebar-menu" style="display: none;">
+                <button class="sidebar-item active" onclick="switchDaaTab('daa-kmp')">
+                    <span class="s-icon">⚡</span> KMP Analysis
+                </button>
+                <button class="sidebar-item" onclick="switchDaaTab('daa-rabin')">
+                    <span class="s-icon">🔍</span> Rabin-Karp Hash
+                </button>
+                <button class="sidebar-item" onclick="switchDaaTab('daa-lcs')">
+                    <span class="s-icon">🧮</span> LCS Similarity
+                </button>
+                <button class="sidebar-item" onclick="switchDaaTab('daa-benchmark')">
+                    <span class="s-icon">📈</span> Performance Graph
+                </button>
+                <button class="sidebar-item" onclick="openCurrentRoleDashboard()">
+                    <span class="s-icon">⬅️</span> Back to Portal
+                </button>
+            </div>
+        </aside>
+
+        <!-- DASHBOARD MAIN BODY -->
+        <div class="dashboard-main-area">
+            <!-- Top Dashboard Bar -->
+            <div class="dash-top-bar">
+                <div class="dash-title-group">
+                    <h2 id="dash-main-title">Student Dashboard</h2>
+                    <p id="dash-main-sub">Your journey towards a better career</p>
+                </div>
+                <div class="dash-user-badge">
+                    <span class="notif-bell">🔔</span>
+                    <div class="avatar-sm" id="dash-avatar-letter">S</div>
+                    <span id="dash-greeting">Welcome back, Sofiyan!</span>
+                </div>
+            </div>
+
+            <!-- ================= A. STUDENT DASHBOARD ================= -->
+            <div id="dash-student-container">
+                <!-- 4 Top Metric Cards (Matches Screenshot) -->
+                <div class="grid-four-metrics">
+                    <div class="metric-box">
+                        <div class="m-icon-circle bg-blue">🛒</div>
+                        <div class="m-data">
+                            <span class="m-count">12</span>
+                            <span class="m-label">Internships</span>
+                        </div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="m-icon-circle bg-purple">🚀</div>
+                        <div class="m-data">
+                            <span class="m-count">18</span>
+                            <span class="m-label">Jobs</span>
+                        </div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="m-icon-circle bg-green">✓</div>
+                        <div class="m-data">
+                            <span class="m-count" id="dash-applied-count">8</span>
+                            <span class="m-label">Applied</span>
+                        </div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="m-icon-circle bg-amber">⚡</div>
+                        <div class="m-data">
+                            <span class="m-count text-purple" id="dash-top-match-val">85%</span>
+                            <span class="m-label">Match Score</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2-COLUMN DASHBOARD GRID -->
+                <div class="grid-dash-two mt-25">
+                    <!-- Left: Your Match Overview Gauge Card -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Your Match Overview</h3>
+                        </div>
+                        <div class="match-gauge-area">
+                            <div class="circular-gauge-box">
+                                <svg class="gauge-svg" viewBox="0 0 100 100">
+                                    <circle class="gauge-bg" cx="50" cy="50" r="42"></circle>
+                                    <circle class="gauge-fill" id="gauge-progress-circle" cx="50" cy="50" r="42" style="stroke-dashoffset: 40;"></circle>
+                                </svg>
+                                <span class="gauge-text" id="gauge-text-val">85%</span>
+                            </div>
+                            <h4 class="match-verdict mt-10" id="gauge-verdict">Excellent Match!</h4>
+                            <p class="match-verdict-sub">You are well matched with available opportunities according to C# backend KMP verification.</p>
+                            <button class="btn-primary mt-15" onclick="scrollToJobRecommendations()">View Recommendations ➔</button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Recommended Opportunities Card -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Recommended Opportunities</h3>
+                            <a href="javascript:void(0)" class="btn-link" onclick="navigateTo('internships')">View All ➔</a>
+                        </div>
+                        <div class="rec-opps-list" id="dash-recommended-list"></div>
+                    </div>
+                </div>
+
+                <!-- C# BACKEND RESUME & JOB MATCHER TOOL (INTERACTIVE) -->
+                <div class="dash-card mt-25" id="skill-matcher-box">
+                    <div class="dash-card-header">
+                        <div>
+                            <span class="card-tag-csharp">Strict C# .NET Backend Engine</span>
+                            <h3 class="mt-5">Live Resume vs Job Fit Calculator</h3>
+                            <p class="helper-text">Drop your resume or load a profile to execute Knuth-Morris-Pratt pattern search on the C# server.</p>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn-ghost btn-sm" onclick="loadSampleResume('sofiyan')">Sofiyan (Lead)</button>
+                            <button class="btn-ghost btn-sm" onclick="loadSampleResume('abdul')">Abdul</button>
+                            <button class="btn-ghost btn-sm" onclick="loadSampleResume('moin')">Moin</button>
+                        </div>
+                    </div>
+
+                    <div class="grid-two-col mt-15">
+                        <div>
+                            <label class="form-label-sm">Candidate Resume (PDF or Plain Text):</label>
+                            <div class="file-dropzone-sm" id="file-dropzone" onclick="triggerFileInput()">
+                                <input type="file" id="resume-file-input" accept=".txt,.pdf" style="display: none;" onchange="handleFileSelect(event)">
+                                <span class="upload-icon-sm">📄</span>
+                                <div>
+                                    <strong>Drop PDF or TXT resume</strong> or <span>Browse</span>
+                                    <span class="file-status-sm" id="file-status-label">No file selected</span>
+                                </div>
+                            </div>
+                            <textarea id="resume-input" rows="6" class="textarea-modern" placeholder="Or paste raw resume text here..."></textarea>
+                        </div>
+
+                        <div>
+                            <label class="form-label-sm">Select Target Opportunity:</label>
+                            <select id="preloaded-jobs" onchange="selectPreloadedJob()" class="select-modern mb-10"></select>
+                            <textarea id="jd-input" rows="8" class="textarea-modern" placeholder="Target requirements populate here..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="action-bar-mt">
+                        <button class="btn-primary btn-cta-purple" onclick="runMatching()">
+                            ⚡ Calculate Match Fit (C# KMP & LCS Backend)
+                        </button>
+                    </div>
+
+                    <!-- MATCH RESULTS ACCORDION -->
+                    <div id="match-results-panel" class="results-container mt-20" style="display: none;">
+                        <div class="results-badge-bar">
+                            <span class="badge-tag-csharp" id="backend-timing-tag">C# Backend: 0.08 ms</span>
+                            <span class="fit-score-big" id="result-score-big">85% FIT</span>
+                        </div>
+
+                        <div class="grid-two-col mt-15">
+                            <div class="skill-box matched-bg">
+                                <h4>Verified Matches (<span id="matched-count">0</span>):</h4>
+                                <div id="matched-chips" class="chip-wrap mt-5"></div>
+                            </div>
+                            <div class="skill-box missing-bg">
+                                <h4>Missing Skills & Preparation Gaps (<span id="missing-count">0</span>):</h4>
+                                <div id="missing-chips" class="chip-wrap mt-5"></div>
+                            </div>
+                        </div>
+
+                        <div class="action-row-end mt-15">
+                            <button class="btn-primary" onclick="applyForCurrentJob()">📩 Apply for this Role</button>
+                            <button class="btn-secondary" onclick="printOfficialCertificate()">🖨️ Print Assessment Certificate (PDF)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MY APPLICATIONS SECTION -->
+                <div class="dash-card mt-25" id="student-apps-card">
+                    <div class="dash-card-header">
+                        <h3>My Applications</h3>
+                        <div class="filter-pills">
+                            <button class="pill-btn active">All</button>
+                            <button class="pill-btn">Internships</button>
+                            <button class="pill-btn">Jobs</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive mt-15">
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Opportunity</th>
+                                    <th>Company</th>
+                                    <th>Submission Date</th>
+                                    <th>Match Fit</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="my-apps-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- PROFILE & RESUME CARD (Matches bottom right in screenshot) -->
+                <div class="dash-card mt-25">
+                    <div class="dash-card-header">
+                        <h3>Profile & Resume</h3>
+                        <span class="badge-clean">Verified Candidate</span>
+                    </div>
+
+                    <div class="profile-resume-layout">
+                        <div class="profile-left-col">
+                            <div class="avatar-large">S</div>
+                            <h4 id="prof-name">Shaik Md Sofiyan</h4>
+                            <p class="prof-sub">BCA Final Year Student · NIMS</p>
+                            <button class="btn-secondary btn-sm mt-10" onclick="showToast('Profile editing enabled!', 'info')">Edit Profile</button>
+                        </div>
+
+                        <div class="profile-right-col">
+                            <label class="form-label-sm">Active Resume File:</label>
+                            <div class="resume-file-box">
+                                <div class="file-icon-square">📄</div>
+                                <div class="file-info-text">
+                                    <strong>Resume_Sofiyan_Lead.pdf</strong>
+                                    <span>245 KB · Uploaded & Verified</span>
+                                </div>
+                                <button class="btn-secondary btn-sm" onclick="showToast('Downloading verified resume...', 'success')">Download</button>
+                            </div>
+                            <div class="status-success-banner mt-10">
+                                ✓ Uploaded Successfully! Synced with C# Placement Engine.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= B. RECRUITER DASHBOARD ================= -->
+            <div id="dash-recruiter-container" style="display: none;">
+                <!-- 4 Top Metrics for Recruiter (Matches Screenshot) -->
+                <div class="grid-four-metrics">
+                    <div class="metric-box">
+                        <div class="m-icon-circle bg-purple">📋</div>
+                        <div class="m-data">
+                            <span class="m-count">5</span>
+                            <span class="m-label">Active Posts</span>
+                        </div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="m-icon-circle bg-blue">🎓</div>
+                        <div class="m-data">
+                            <span class="m-count">3</span>
+                            <span class="m-label">Internships</span>
+                        </div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="m-icon-circle bg-teal">👥</div>
+                        <div class="m-data">
+                            <span class="m-count">127</span>
+                            <span class="m-label">Applicants</span>
+                        </div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="m-icon-circle bg-amber">📈</div>
+                        <div class="m-data">
+                            <span class="m-count text-purple">92%</span>
+                            <span class="m-label">Response Rate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recruiter Middle Layout (Recent Applicants + Post Actions) -->
+                <div class="grid-dash-two mt-25">
+                    <!-- Recent Applicants list -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Recent Applicants</h3>
+                            <a href="javascript:void(0)" class="btn-link" onclick="scrollToLeaderboard()">View All ➔</a>
+                        </div>
+                        <div class="recent-applicants-list">
+                            <div class="applicant-row">
+                                <div class="app-avatar bg-amber">AS</div>
+                                <div class="app-info">
+                                    <strong>Aarav Sharma</strong>
+                                    <span>BCA Student · NIMS</span>
+                                </div>
+                                <span class="badge-fit-green">95% Match</span>
+                                <span class="time-ago">2h ago</span>
+                            </div>
+                            <div class="applicant-row">
+                                <div class="app-avatar bg-purple">DP</div>
+                                <div class="app-info">
+                                    <strong>Diya Patel</strong>
+                                    <span>BCA Student · NIMS</span>
+                                </div>
+                                <span class="badge-fit-green">93% Match</span>
+                                <span class="time-ago">3h ago</span>
+                            </div>
+                            <div class="applicant-row">
+                                <div class="app-avatar bg-blue">RK</div>
+                                <div class="app-info">
+                                    <strong>Rohan Kumar</strong>
+                                    <span>BCA Student · NIMS</span>
+                                </div>
+                                <span class="badge-fit-green">90% Match</span>
+                                <span class="time-ago">4h ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Post New Openings Actions -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Post New Opening</h3>
+                        </div>
+                        <div class="post-cards-row">
+                            <div class="action-post-card bg-purple-grad" onclick="openPostJobModal('job')">
+                                <span class="act-icon">💼</span>
+                                <h4>Post Job</h4>
+                                <p>Full-time graduate placement</p>
+                            </div>
+                            <div class="action-post-card bg-teal-grad" onclick="openPostJobModal('internship')">
+                                <span class="act-icon">🎓</span>
+                                <h4>Post Internship</h4>
+                                <p>Semester internship posting</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Full QuickSort Applicant Leaderboard -->
+                <div class="dash-card mt-25" id="recruiter-leaderboard-card">
+                    <div class="dash-card-header">
+                        <div>
+                            <span class="card-tag-csharp">DAA QuickSort O(n log n)</span>
+                            <h3 class="mt-5">🏆 Candidate Ranking Leaderboard</h3>
+                            <p class="helper-text">Candidates sorted in descending order of Fit Score strictly on the C# Backend.</p>
+                        </div>
+                        <div class="header-action-group">
+                            <select id="leaderboard-job-select" onchange="loadCandidateLeaderboard()" class="select-modern"></select>
+                            <button class="btn-primary btn-sm" onclick="loadCandidateLeaderboard()">⚡ Re-rank Pool</button>
+                        </div>
+                    </div>
+
+                    <div id="sort-metrics-banner" class="sort-banner-purple mt-10"></div>
+
+                    <div class="table-responsive mt-15">
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Candidate Name</th>
+                                    <th>Roll No</th>
+                                    <th>Fit Score</th>
+                                    <th>Matched Skills</th>
+                                    <th>Missing Gaps</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboard-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= C. DAA ANALYTICS STUDIO ================= -->
+            <div id="dash-daa-container" style="display: none;">
+                <!-- DAA Tabs Header (Matches Screenshot) -->
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <div>
+                            <h2>DAA Analytics Studio</h2>
+                            <p class="helper-text">Explore String Matching Algorithms & Performance (Knuth-Morris-Pratt, Rabin-Karp, Longest Common Subsequence)</p>
+                        </div>
+                        <div class="daa-nav-pills">
+                            <button class="daa-pill active" onclick="switchDaaTab('daa-kmp')">KMP</button>
+                            <button class="daa-pill" onclick="switchDaaTab('daa-rabin')">Rabin-Karp</button>
+                            <button class="daa-pill" onclick="switchDaaTab('daa-lcs')">LCS</button>
+                            <button class="daa-pill" onclick="switchDaaTab('daa-benchmark')">Benchmark</button>
+                        </div>
+                    </div>
+
+                    <!-- KMP Info & Performance Graph Grid (Matches Screenshot) -->
+                    <div class="grid-dash-two mt-20">
+                        <!-- Algorithm Info Card -->
+                        <div class="algo-explanation-box">
+                            <h3 id="daa-algo-title">KMP Algorithm</h3>
+                            <p id="daa-algo-desc">Fast pattern matching using Longest Prefix Suffix (LPS) table without backtracking in text.</p>
+                            
+                            <div class="complexity-stat mt-15">
+                                <span class="label">Time Complexity:</span>
+                                <strong class="val text-purple" id="daa-complexity-val">O(n + m)</strong>
+                            </div>
+
+                            <button class="btn-primary mt-25" onclick="runBenchmark()">Run Demo ➔</button>
+                        </div>
+
+                        <!-- Performance Graph Canvas (Matches Screenshot) -->
+                        <div class="graph-card-box">
+                            <div class="graph-header">
+                                <h4>Performance Graph</h4>
+                                <div class="graph-legend">
+                                    <span class="legend-item"><span class="dot-purple"></span> KMP</span>
+                                    <span class="legend-item"><span class="dot-teal"></span> Rabin-Karp</span>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-container">
+                                <svg class="chart-svg" viewBox="0 0 400 180" id="daa-perf-chart">
+                                    <!-- Grid lines -->
+                                    <line x1="40" y1="20" x2="380" y2="20" stroke="#e2e8f0"></line>
+                                    <line x1="40" y1="60" x2="380" y2="60" stroke="#e2e8f0"></line>
+                                    <line x1="40" y1="100" x2="380" y2="100" stroke="#e2e8f0"></line>
+                                    <line x1="40" y1="140" x2="380" y2="140" stroke="#e2e8f0"></line>
+
+                                    <!-- Labels -->
+                                    <text x="35" y="25" text-anchor="end" class="chart-label">150ms</text>
+                                    <text x="35" y="65" text-anchor="end" class="chart-label">100ms</text>
+                                    <text x="35" y="105" text-anchor="end" class="chart-label">50ms</text>
+                                    <text x="35" y="145" text-anchor="end" class="chart-label">0ms</text>
+
+                                    <text x="80" y="165" text-anchor="middle" class="chart-label">1K</text>
+                                    <text x="210" y="165" text-anchor="middle" class="chart-label">10K</text>
+                                    <text x="340" y="165" text-anchor="middle" class="chart-label">100K</text>
+
+                                    <!-- KMP Line (Purple - Linear) -->
+                                    <path d="M 80 138 Q 210 115 340 70" fill="none" stroke="#6366f1" stroke-width="3"></path>
+                                    <circle cx="80" cy="138" r="4" fill="#6366f1"></circle>
+                                    <circle cx="210" cy="115" r="4" fill="#6366f1"></circle>
+                                    <circle cx="340" cy="70" r="4" fill="#6366f1"></circle>
+
+                                    <!-- Rabin-Karp Line (Teal - Spurious overhead) -->
+                                    <path d="M 80 137 Q 210 100 340 45" fill="none" stroke="#06b6d4" stroke-width="3"></path>
+                                    <circle cx="80" cy="137" r="4" fill="#06b6d4"></circle>
+                                    <circle cx="210" cy="100" r="4" fill="#06b6d4"></circle>
+                                    <circle cx="340" cy="45" r="4" fill="#06b6d4"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive 2D Dynamic Programming Grid Visualizer -->
+                <div class="dash-card mt-25">
+                    <div class="dash-card-header">
+                        <div>
+                            <span class="card-tag-csharp">Dynamic Programming O(mn)</span>
+                            <h3 class="mt-5">2D Dynamic Programming (DP) Grid Visualizer</h3>
+                            <p class="helper-text">Renders the complete matrix recurrence with optimal traceback path highlighted in green.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid-two-col mt-15">
+                        <input type="text" id="dp-str1" value="react" class="input-modern" placeholder="String A (e.g. react)">
+                        <input type="text" id="dp-str2" value="creat" class="input-modern" placeholder="String B (e.g. creat)">
+                    </div>
+
+                    <div class="action-row-between mt-15">
+                        <button class="btn-primary" onclick="generateDpMatrix()">Generate C# DP Matrix & Traceback</button>
+                        <div class="pill-group">
+                            <button class="btn-pill" onclick="setDpPreset('react', 'creat')">react vs creat (80%)</button>
+                            <button class="btn-pill" onclick="setDpPreset('nodejs', 'node.js')">nodejs vs node.js (85%)</button>
+                            <button class="btn-pill" onclick="setDpPreset('web developer', 'python web developer')">role titles (65%)</button>
+                        </div>
+                    </div>
+
+                    <div id="dp-matrix-container" class="mt-20" style="display: none;">
+                        <div class="lcs-stat-bar">
+                            <span>LCS Length: <strong id="dp-lcs-len">4</strong></span>
+                            <span>Similarity: <strong id="dp-similarity">80%</strong></span>
+                            <span id="dp-status-badge" class="badge-fit-green">ACCEPTED AS NEAR-MATCH</span>
+                            <span>C# Server Time: <strong id="dp-backend-time">0.05 ms</strong></span>
+                        </div>
+                        <div class="matrix-scroll-wrap mt-15" id="matrix-table-wrapper"></div>
+                    </div>
+                </div>
+
+                <!-- C# Stopwatch Benchmark Table -->
+                <div class="dash-card mt-25">
+                    <div class="dash-card-header">
+                        <h3>C# High-Precision Stopwatch Benchmark Table</h3>
+                        <button class="btn-primary btn-sm" onclick="runBenchmark()">▶ Run C# Benchmark</button>
+                    </div>
+                    <div class="table-responsive mt-15">
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Text Length $n$</th>
+                                    <th>KMP Comparisons</th>
+                                    <th>RK Hash Matches</th>
+                                    <th>RK Spurious Windows</th>
+                                    <th>RK Checks</th>
+                                    <th>KMP Time (ms)</th>
+                                    <th>Rabin-Karp Time (ms)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="benchmark-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 4. AUTH MODAL (WELCOME BACK / CREATE ACCOUNT) ================= -->
+    <div id="auth-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card-auth">
+            <button class="modal-close-btn" onclick="closeAuthModal()">✕</button>
+
+            <!-- A. WELCOME BACK (LOGIN CARD - Matches Screenshot) -->
+            <div id="modal-login-view">
+                <div class="modal-brand-header">
+                    <div class="brand-logo-icon">S</div>
+                    <span class="brand-logo-text">SmartMatch</span>
+                </div>
+
+                <div class="modal-title-box">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to continue your journey</p>
+                </div>
+
+                <form onsubmit="handleLoginSubmit(event)" class="mt-20">
+                    <div class="form-group-field">
+                        <span class="field-icon">👤</span>
+                        <input type="email" id="modal-login-email" required placeholder="Email Address" value="sofiyan@nims.edu.in">
+                    </div>
+
+                    <div class="form-group-field mt-15">
+                        <span class="field-icon">🔒</span>
+                        <input type="password" id="modal-login-password" required placeholder="Password" value="password123">
+                        <span class="toggle-eye" onclick="togglePasswordVisibility('modal-login-password')">👁️</span>
+                    </div>
+
+                    <div class="form-sub-row mt-15">
+                        <label class="remember-check"><input type="checkbox" checked> Remember Me</label>
+                        <a href="javascript:void(0)" class="forgot-link" onclick="showToast('Password reset link sent to registered email.', 'info')">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-primary btn-auth-purple mt-20">Login</button>
+                </form>
+
+                <div class="or-divider mt-20"><span>or</span></div>
+
+                <div class="social-logins-grid mt-15">
+                    <button class="btn-social" onclick="showToast('Google OAuth connected!', 'success')">
+                        <span class="social-icon">G</span> Google
+                    </button>
+                    <button class="btn-social" onclick="showToast('GitHub OAuth connected!', 'success')">
+                        <span class="social-icon">🐙</span> GitHub
+                    </button>
+                </div>
+
+                <p class="auth-switch-text mt-20">
+                    Don't have an account? <a href="javascript:void(0)" onclick="toggleModalAuthMode('signup')">Sign Up</a>
+                </p>
+
+                <!-- 1-Click Examiner Demo Logins -->
+                <div class="demo-pills-row mt-15">
+                    <button class="btn-demo-tag" onclick="quickFillModalLogin('sofiyan@nims.edu.in', 'password123')">🎓 Sofiyan (Lead)</button>
+                    <button class="btn-demo-tag" onclick="quickFillModalLogin('hr@technova.com', 'password123')">💼 TechNova HR</button>
+                    <button class="btn-demo-tag" onclick="quickFillModalLogin('placement@nims.edu.in', 'password123')">🛡️ Guide / Faculty</button>
+                </div>
+            </div>
+
+            <!-- B. CREATE ACCOUNT (SIGN UP CARD - Matches Screenshot) -->
+            <div id="modal-signup-view" style="display: none;">
+                <div class="modal-brand-header">
+                    <div class="brand-logo-icon">S</div>
+                    <span class="brand-logo-text">SmartMatch</span>
+                </div>
+
+                <div class="modal-title-box">
+                    <h2>Create Account</h2>
+                    <p>Join our platform today</p>
+                </div>
+
+                <!-- Role Selector Toggle Pills (Matches Screenshot) -->
+                <div class="role-selector-pills mt-15">
+                    <button class="role-toggle-btn active" id="btn-role-student" onclick="setSignupRole('Student')">Student</button>
+                    <button class="role-toggle-btn" id="btn-role-recruiter" onclick="setSignupRole('Recruiter')">Recruiter</button>
+                </div>
+
+                <form onsubmit="handleRegisterSubmit(event)" class="mt-15">
+                    <div class="form-group-field">
+                        <span class="field-icon">👤</span>
+                        <input type="text" id="modal-reg-name" required placeholder="Full Name">
+                    </div>
+                    <div class="form-group-field mt-10">
+                        <span class="field-icon">✉️</span>
+                        <input type="email" id="modal-reg-email" required placeholder="Email Address">
+                    </div>
+                    <div class="form-group-field mt-10">
+                        <span class="field-icon">🆔</span>
+                        <input type="text" id="modal-reg-roll" required placeholder="College Roll No (e.g. U16NB24S0149)">
+                    </div>
+                    <div class="form-group-field mt-10">
+                        <span class="field-icon">🔒</span>
+                        <input type="password" id="modal-reg-password" required placeholder="Password">
+                    </div>
+                    <div class="form-group-field mt-10">
+                        <span class="field-icon">🔒</span>
+                        <input type="password" id="modal-reg-confirm" required placeholder="Confirm Password">
+                    </div>
+
+                    <button type="submit" class="btn-primary btn-auth-purple mt-20">Sign Up</button>
+                </form>
+
+                <p class="auth-switch-text mt-20">
+                    Already have an account? <a href="javascript:void(0)" onclick="toggleModalAuthMode('login')">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 5. OFFICIAL PRINTABLE CERTIFICATE VIEW ================= -->
+    <div id="official-certificate-view" class="print-certificate-page" style="display: none;">
+        <div class="cert-border">
+            <div class="cert-header">
+                <div class="cert-college">NANDI INSTITUTE OF MANAGEMENT & SCIENCE</div>
+                <div class="cert-dept">Department of Computer Application · BCA V Semester (2026–2027)</div>
+                <div class="cert-title">CANDIDATE ALGORITHMIC PLACEMENT FIT CERTIFICATE</div>
+                <div class="cert-id" id="cert-doc-id">DOC ID: NIMS/BCA/SM-2026-0149</div>
+            </div>
+
+            <div class="cert-body">
+                <p>This is to certify that candidate <strong id="cert-candidate-name">Shaik Md Sofiyan (Lead)</strong> (UUCMS Reg. No: <strong id="cert-roll-no">U16NB24S0149</strong>) has undergone automated resume skill extraction and algorithmic alignment evaluation for the position of <strong id="cert-job-title">.NET Full-Stack Developer Intern</strong>.</p>
+                
+                <div class="cert-score-box">
+                    <div class="cert-score-val" id="cert-score-val">85.71%</div>
+                    <div class="cert-score-label" id="cert-score-tier">TIER 1 — EXCELLENT TECHNICAL MATCH</div>
+                </div>
+
+                <div class="cert-table-wrap">
+                    <p><strong>Verified Skill Alignments:</strong> <span id="cert-matched-skills">C#, .NET, ASP.NET Core, SQL, Data Structures, Algorithms, OOP, Git</span></p>
+                    <p><strong>Identified Skill Gaps:</strong> <span id="cert-missing-skills">None (Full Match)</span></p>
+                    <p><strong>Algorithmic Verification:</strong> Knuth-Morris-Pratt (KMP) exact detection ($O(n+m)$), Dynamic Programming Longest Common Subsequence (LCS) similarity ($O(mn)$), and QuickSort candidate ranking.</p>
+                </div>
+            </div>
+
+            <div class="cert-signatures">
+                <div class="sig-box">
+                    <div class="sig-line"></div>
+                    <div class="sig-name">Candidate Signature</div>
+                </div>
+                <div class="sig-box">
+                    <div class="sig-line"></div>
+                    <div class="sig-name">Prof. Thameemunnisa<br><small>Project Guide / Faculty</small></div>
+                </div>
+                <div class="sig-box">
+                    <div class="sig-line"></div>
+                    <div class="sig-name">Head of Department<br><small>Dept. of Computer Application</small></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 6. POST JOB MODAL ================= -->
+    <div id="post-job-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <div class="dash-card-header">
+                <h3>Post New Opening</h3>
+                <button class="modal-close-btn" onclick="closePostJobModal()">✕</button>
+            </div>
+            <form onsubmit="handleRecruiterPostSubmit(event)" class="mt-15">
+                <div class="grid-two-col">
+                    <div class="form-group-field"><input type="text" id="post-title" required placeholder="Role Title (e.g. C# .NET Developer)"></div>
+                    <div class="form-group-field"><input type="text" id="post-company" required placeholder="Company Name"></div>
+                </div>
+                <div class="grid-two-col mt-10">
+                    <div class="form-group-field"><input type="text" id="post-location" placeholder="Location (e.g. Bangalore · Hybrid)"></div>
+                    <div class="form-group-field"><input type="text" id="post-stipend" placeholder="Stipend (e.g. ₹25,000 / month)"></div>
+                </div>
+                <div class="form-group-field mt-10">
+                    <textarea id="post-desc" rows="4" required placeholder="Requirements & skills (C#, .NET, SQL, Algorithms, OOP)..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary mt-15">Publish to SmartMatch Portal ➔</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= 7. FOOTER (Matches Screenshot) ================= -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-brand-col">
+                <div class="footer-logo">
+                    <div class="brand-logo-icon">S</div>
+                    <span class="brand-logo-text text-white">SmartMatch</span>
+                </div>
+                <p class="footer-slogan">Build · Match · Grow</p>
+                <div class="social-icons-row">
+                    <a href="javascript:void(0)" class="social-link">in</a>
+                    <a href="javascript:void(0)" class="social-link">🐙</a>
+                    <a href="javascript:void(0)" class="social-link">▶</a>
+                    <a href="javascript:void(0)" class="social-link">𝕏</a>
+                </div>
+            </div>
+
+            <div class="footer-legal-col">
+                <p>© 2026 SmartMatch. All rights reserved. Department of Computer Application, Nandi Institute of Management & Science (NIMS).</p>
+                <div class="legal-links">
+                    <a href="javascript:void(0)">Privacy</a>
+                    <a href="javascript:void(0)">Terms</a>
+                    <a href="javascript:void(0)">Help</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
